@@ -502,14 +502,15 @@ td.date-ok {
 }
 #readonly-banner.hidden { display: none; }
 
-/* Locked state — disable visual editing cues */
-body.locked [contenteditable="true"] {
+/* Locked state — visual cues only (actual lock handled in JS via contentEditable) */
+body.locked [data-editable] {
   cursor: default;
-  pointer-events: none;
+  background: transparent !important;
+  box-shadow: none !important;
 }
-body.locked .badge {
-  cursor: default;
-  pointer-events: none;
+body.locked [data-editable]:hover {
+  box-shadow: none !important;
+}
 }
 
 /* ===== PRINT ===== */
@@ -571,7 +572,7 @@ tr.gantt-cat td {
     <div class="subtitle">Weekly Cross-Functional Update</div>
   </div>
   <div class="header-right">
-    <div id="header-date" contenteditable="true"></div>
+    <div id="header-date" contenteditable="true" data-editable data-editable data-editable></div>
     <button id="header-lock-btn" class="header-btn locked" onclick="toggleLock()">🔒 Locked</button>
     <button class="header-btn" onclick="window.print()">Export PDF</button>
   </div>
@@ -600,7 +601,7 @@ tr.gantt-cat td {
             <span class="status-dot dot-green"></span>
             Program Status
           </div>
-          <div class="status-summary-text" contenteditable="true">
+          <div class="status-summary-text" contenteditable="true" data-editable data-editable data-editable>
             Program in Execution. Core workstreams (ITSA, SLP) on plan. Device testing sequencing confirmed with parallel cert strategy. ORT timing remains open pending BEAD-compliant OLT clarification. PRISM not a blocker for current testing phases.
           </div>
         </div>
@@ -609,10 +610,10 @@ tr.gantt-cat td {
         <div class="card">
           <div class="card-title">New This Week</div>
           <ul class="editable-list" id="new-this-week">
-            <li contenteditable="true">Sagemcom production schedule received (4/22) — BABA test devices confirmed for 6/19 delivery; mass production begins 10/01 (first deliveries 1/04/27)</li>
-            <li contenteditable="true">Gap: Critical testing requires devices by 6/01 — 18-day shortfall vs. confirmed delivery date</li>
-            <li contenteditable="true">PRISM — BLOCKED (4/22): Scott Wilgur (Sr. Director) confirmed no further PRISM development. Blocked by SAP Work Order Application issues in PNG. No unblock date. Leadership aware up to Paul Woelk (EVP).</li>
-            <li contenteditable="true">Billing Option 2 approved (4/22): Production codes EED'd; lower env available for testing; BRF-42033 moving forward</li>
+            <li contenteditable="true" data-editable data-editable data-editable>Sagemcom production schedule received (4/22) — BABA test devices confirmed for 6/19 delivery; mass production begins 10/01 (first deliveries 1/04/27)</li>
+            <li contenteditable="true" data-editable data-editable data-editable>Gap: Critical testing requires devices by 6/01 — 18-day shortfall vs. confirmed delivery date</li>
+            <li contenteditable="true" data-editable data-editable data-editable>PRISM — BLOCKED (4/22): Scott Wilgur (Sr. Director) confirmed no further PRISM development. Blocked by SAP Work Order Application issues in PNG. No unblock date. Leadership aware up to Paul Woelk (EVP).</li>
+            <li contenteditable="true" data-editable data-editable data-editable>Billing Option 2 approved (4/22): Production codes EED'd; lower env available for testing; BRF-42033 moving forward</li>
           </ul>
         </div>
 
@@ -634,19 +635,19 @@ tr.gantt-cat td {
             </thead>
             <tbody>
               <tr>
-                <td contenteditable="true">Real BABA devices needed by 6/01 — Sagemcom can only deliver 6/19 (18-day gap)</td>
+                <td contenteditable="true" data-editable data-editable data-editable>Real BABA devices needed by 6/01 — Sagemcom can only deliver 6/19 (18-day gap)</td>
                 <td><span class="impact-critical">Critical</span></td>
-                <td contenteditable="true">30 offshore HW 1.7 units expedited; Jason Henricks met with SAIE Sr. Director 4/22 — HW 1.7 mock accepted</td>
+                <td contenteditable="true" data-editable data-editable data-editable>30 offshore HW 1.7 units expedited; Jason Henricks met with SAIE Sr. Director 4/22 — HW 1.7 mock accepted</td>
               </tr>
               <tr>
-                <td contenteditable="true">PRISM blocked by SAP — no development timeline</td>
+                <td contenteditable="true" data-editable data-editable data-editable>PRISM blocked by SAP — no development timeline</td>
                 <td><span class="impact-critical">Critical</span></td>
-                <td contenteditable="true">Scott Wilgur confirmed 4/22. ERP Operations and IT conversations ongoing. Leadership aware up to Paul Woelk.</td>
+                <td contenteditable="true" data-editable data-editable data-editable>Scott Wilgur confirmed 4/22. ERP Operations and IT conversations ongoing. Leadership aware up to Paul Woelk.</td>
               </tr>
               <tr>
-                <td contenteditable="true">Parametric testing (6 wks) blocks CPE/Voice testing and ORT readiness</td>
+                <td contenteditable="true" data-editable data-editable data-editable>Parametric testing (6 wks) blocks CPE/Voice testing and ORT readiness</td>
                 <td><span class="impact-high">High</span></td>
-                <td contenteditable="true">Parallel cert strategy approved — CPE/Voice concurrent with parametric review (Kris Mehling / Jason Henricks)</td>
+                <td contenteditable="true" data-editable data-editable data-editable>Parallel cert strategy approved — CPE/Voice concurrent with parametric review (Kris Mehling / Jason Henricks)</td>
               </tr>
             </tbody>
           </table>
@@ -899,29 +900,29 @@ tr.gantt-cat td {
           <tbody>
             <tr class="org-group-start">
               <td class="org-cell" rowspan="2">SDIT</td>
-              <td contenteditable="true">ITSA</td>
-              <td contenteditable="true">Anthony Batiste</td>
+              <td contenteditable="true" data-editable data-editable data-editable>ITSA</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Anthony Batiste</td>
               <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
-              <td contenteditable="true">Working with CHAT / Biller to get data setup for testing, ETA 4/24. 3/13–6/05: ITSA Development (In Progress). 5/07–6/19: ITSA Testing. 5/27–6/10: NICE Development. 6/11: ITSA to deploy code in MC environment to support NICE QA. 6/11–6/19: NICE QA testing. 6/22: NICE ready for SAIE. 6/22: ITSA Ready for SAIE Testing</td>
-              <td contenteditable="true">Key dependency: R02 in CHCAPABLTY-36204 — BABA complaint devices for testing to be available by 4/15 partially mitigated with 5 of 8 devices (A/O 4/23). 3/13–6/05: ITSA Development. 5/07–6/19: ITSA Testing. 6/23–8/04: SAIE Testing. 7/01–7/15: Performance Testing</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Working with CHAT / Biller to get data setup for testing, ETA 4/24. 3/13–6/05: ITSA Development (In Progress). 5/07–6/19: ITSA Testing. 5/27–6/10: NICE Development. 6/11: ITSA to deploy code in MC environment to support NICE QA. 6/11–6/19: NICE QA testing. 6/22: NICE ready for SAIE. 6/22: ITSA Ready for SAIE Testing</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Key dependency: R02 in CHCAPABLTY-36204 — BABA complaint devices for testing to be available by 4/15 partially mitigated with 5 of 8 devices (A/O 4/23). 3/13–6/05: ITSA Development. 5/07–6/19: ITSA Testing. 6/23–8/04: SAIE Testing. 7/01–7/15: Performance Testing</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">ITDA</td>
-              <td contenteditable="true">Anthony Batiste</td>
+              <td contenteditable="true" data-editable data-editable data-editable>ITDA</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Anthony Batiste</td>
               <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
-              <td contenteditable="true">ITDA development is delayed for rrbootfile and RDU changes for BABA device onboarding as additional complexity is discovered for L-CHTR, QA ready target to be revised</td>
-              <td contenteditable="true">Development delayed — QA ready target under revision</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>ITDA development is delayed for rrbootfile and RDU changes for BABA device onboarding as additional complexity is discovered for L-CHTR, QA ready target to be revised</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Development delayed — QA ready target under revision</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr class="org-group-start">
               <td class="org-cell">Strategic Data Platforms</td>
-              <td contenteditable="true">SLP</td>
-              <td contenteditable="true">Princy (Mary Antony) / Owen Garrity</td>
+              <td contenteditable="true" data-editable data-editable data-editable>SLP</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Princy (Mary Antony) / Owen Garrity</td>
               <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
-              <td contenteditable="true">QA testing in progress. Shift in UAT dates due to Cox Integration project (Spec Day 45). New dates TBD. ITSA in agreement to connect to SLP QA to test the API response and locations. BEAD indicators complete for 88 locations in SLP QA for ITSA testing</td>
-              <td contenteditable="true">CHCAPABLTY-34005: 4/10 Database and Services Development (Complete). 4/13–4/30: SLP QA Testing. 4/23–5/01 TBD: SLP UAT, Cox Integration taking priority, currently in UAT. 7/21: SLP Prod Deployment</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>QA testing in progress. Shift in UAT dates due to Cox Integration project (Spec Day 45). New dates TBD. ITSA in agreement to connect to SLP QA to test the API response and locations. BEAD indicators complete for 88 locations in SLP QA for ITSA testing</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CHCAPABLTY-34005: 4/10 Database and Services Development (Complete). 4/13–4/30: SLP QA Testing. 4/23–5/01 TBD: SLP UAT, Cox Integration taking priority, currently in UAT. 7/21: SLP Prod Deployment</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -956,70 +957,70 @@ tr.gantt-cat td {
           <tbody>
             <tr class="org-group-start">
               <td class="org-cell" rowspan="5">CPE Engineering</td>
-              <td contenteditable="true">CPE Production (Sagemcom)</td>
-              <td contenteditable="true">Kris Mehling</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CPE Production (Sagemcom)</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Kris Mehling</td>
               <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
-              <td contenteditable="true">Sagemcom model: Fast 5681-US Charter / SONUV15B. Manufacturing confirmed domestic (Vancouver, WA). Three key milestones: (1) 30 mock HW v1.7 devices arriving 4/29 — distributing to ITSA/C-Tech (5), Sagemcom Denver (2–3), remainder to Town &amp; Country MO; (2) actual BABA devices expected 6/19; (3) mass production 10/1–1/4 supporting January demand (~16k units by early Jan, 4,000–5,500/month after). Witness testing removed due to low device risk. CPE cert, voice cert, and CPE Ops cert to run in parallel ~3 weeks after parametric. Kris consolidating device count requests — working count of 90 shared with Sagemcom; ORT quantities to follow.</td>
-              <td contenteditable="true">CPESAGE-426: Mock devices arriving 4/29. Real BABA devices: 6/19. Mass production: 10/1–1/4. Device count table (real BABA): ITSA 40 (T&amp;C), SAIE 10 (T&amp;C), CPE-Jason 10, CPE Ops Cert-Halina 15, CPE Voice-JR 21, Parametrics CTECII 6, IDME 6 (LED firmware required). Total: 108.</td>
-              <td contenteditable="true" data-date-required="true">6/19/26</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Sagemcom model: Fast 5681-US Charter / SONUV15B. Manufacturing confirmed domestic (Vancouver, WA). Three key milestones: (1) 30 mock HW v1.7 devices arriving 4/29 — distributing to ITSA/C-Tech (5), Sagemcom Denver (2–3), remainder to Town &amp; Country MO; (2) actual BABA devices expected 6/19; (3) mass production 10/1–1/4 supporting January demand (~16k units by early Jan, 4,000–5,500/month after). Witness testing removed due to low device risk. CPE cert, voice cert, and CPE Ops cert to run in parallel ~3 weeks after parametric. Kris consolidating device count requests — working count of 90 shared with Sagemcom; ORT quantities to follow.</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CPESAGE-426: Mock devices arriving 4/29. Real BABA devices: 6/19. Mass production: 10/1–1/4. Device count table (real BABA): ITSA 40 (T&amp;C), SAIE 10 (T&amp;C), CPE-Jason 10, CPE Ops Cert-Halina 15, CPE Voice-JR 21, Parametrics CTECII 6, IDME 6 (LED firmware required). Total: 108.</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">6/19/26</td>
             </tr>
             <tr>
-              <td contenteditable="true">CPE HW Parametric Test Plan</td>
-              <td contenteditable="true">Kris Mehling</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CPE HW Parametric Test Plan</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Kris Mehling</td>
               <td><span class="badge badge-complete" onclick="cycleBadge(this)">Complete</span></td>
-              <td contenteditable="true">Test plan sent to Sagemcom on 3/25</td>
-              <td contenteditable="true">CHCAPABLTY-35779: Complete</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Test plan sent to Sagemcom on 3/25</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CHCAPABLTY-35779: Complete</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">CPE HW Parametric Cert</td>
-              <td contenteditable="true">Kris Mehling</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CPE HW Parametric Cert</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Kris Mehling</td>
               <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
-              <td contenteditable="true">Awaiting Sagemcom BABA test units (expected 6/19). Parametric testing ~8/2. Witness testing waived — low risk accepted given identical BOM to HW v1.7. CPE cert, voice cert, and CPE Ops cert to run in parallel after parametric (~3 weeks).</td>
-              <td contenteditable="true">CHCAPABLTY-35780: Testing audit 3 weeks</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Awaiting Sagemcom BABA test units (expected 6/19). Parametric testing ~8/2. Witness testing waived — low risk accepted given identical BOM to HW v1.7. CPE cert, voice cert, and CPE Ops cert to run in parallel after parametric (~3 weeks).</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CHCAPABLTY-35780: Testing audit 3 weeks</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">CPE Cert Testing</td>
-              <td contenteditable="true">Kris Mehling</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CPE Cert Testing</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Kris Mehling</td>
               <td><span class="badge badge-planning" onclick="cycleBadge(this)">Planning</span></td>
-              <td contenteditable="true">Awaiting real BABA test units (6/19). To start after Parametric testing. Running in parallel with CPE Voice Testing and CPE Ops Cert. Halina Teague confirmed bandwidth — will fit into broader release/testing schedule.</td>
-              <td contenteditable="true">CHCAPABLTY-35746: To start after Parametric testing is completed. 3 weeks LOE, 8/24–9/11</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Awaiting real BABA test units (6/19). To start after Parametric testing. Running in parallel with CPE Voice Testing and CPE Ops Cert. Halina Teague confirmed bandwidth — will fit into broader release/testing schedule.</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CHCAPABLTY-35746: To start after Parametric testing is completed. 3 weeks LOE, 8/24–9/11</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">CPE Voice Testing</td>
-              <td contenteditable="true">Kris Mehling</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CPE Voice Testing</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Kris Mehling</td>
               <td><span class="badge badge-planning" onclick="cycleBadge(this)">Planning</span></td>
-              <td contenteditable="true">Awaiting real BABA test units (6/19). To start after Parametric testing. Running in parallel with CPE Cert Testing. 21 regular units + 4 w/serial dongle (JR). Matt Wobbe / Kevin York (21 units).</td>
-              <td contenteditable="true">VOXCPE-1631: To start after Parametric testing is completed. 3 weeks LOE, 8/24–9/11. Done in parallel with CPE Cert Testing</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Awaiting real BABA test units (6/19). To start after Parametric testing. Running in parallel with CPE Cert Testing. 21 regular units + 4 w/serial dongle (JR). Matt Wobbe / Kevin York (21 units).</td>
+              <td contenteditable="true" data-editable data-editable data-editable>VOXCPE-1631: To start after Parametric testing is completed. 3 weeks LOE, 8/24–9/11. Done in parallel with CPE Cert Testing</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr class="org-group-start">
               <td class="org-cell" rowspan="2">IDME</td>
-              <td contenteditable="true">Testing</td>
-              <td contenteditable="true">Anders Mavis</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Testing</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Anders Mavis</td>
               <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
-              <td contenteditable="true">Awaiting real BABA test units (6/19). 6 units needed. Note: LED firmware must be loaded to test LEDs. Devesh Pandey to confirm actual count needed with SAI team.</td>
-              <td contenteditable="true">1 week LOE, 6/22–6/26. 6 real BABA units required (LED firmware loaded).</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Awaiting real BABA test units (6/19). 6 units needed. Note: LED firmware must be loaded to test LEDs. Devesh Pandey to confirm actual count needed with SAI team.</td>
+              <td contenteditable="true" data-editable data-editable data-editable>1 week LOE, 6/22–6/26. 6 real BABA units required (LED firmware loaded).</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">Physical Identifier</td>
-              <td contenteditable="true">Anders Mavis</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Physical Identifier</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Anders Mavis</td>
               <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
-              <td contenteditable="true">IDME working with Product on the BABA identifiers for the device and packaging</td>
-              <td contenteditable="true">Delivery targeted for 4/30</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>IDME working with Product on the BABA identifiers for the device and packaging</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Delivery targeted for 4/30</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr class="org-group-start">
               <td class="org-cell">ERP Management</td>
-              <td contenteditable="true">SAP</td>
-              <td contenteditable="true">Trevor Mendelson</td>
+              <td contenteditable="true" data-editable data-editable data-editable>SAP</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Trevor Mendelson</td>
               <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
-              <td contenteditable="true">SAP is reliant on the new Master Data Governance (MDG) tool to be in place. Reliant on PNG requirements. Functional specs completed 4/03. Development in progress</td>
-              <td contenteditable="true">5/28</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>SAP is reliant on the new Master Data Governance (MDG) tool to be in place. Reliant on PNG requirements. Functional specs completed 4/03. Development in progress</td>
+              <td contenteditable="true" data-editable data-editable data-editable>5/28</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1054,97 +1055,97 @@ tr.gantt-cat td {
           <tbody>
             <tr class="org-group-start">
               <td class="org-cell">Business Integration</td>
-              <td contenteditable="true">ORT Testing</td>
-              <td contenteditable="true">Megan Baltrushunas</td>
+              <td contenteditable="true" data-editable data-editable data-editable>ORT Testing</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Megan Baltrushunas</td>
               <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
-              <td contenteditable="true">ACTION ITEMS: Project team to assist with BEAD location set up for testing; Jonas to assist with shipment of equipment to ORT team for testing; Devesh to schedule IE to ORT handoff</td>
-              <td contenteditable="true">ORT Testing: Estimated 2–3 weeks. Target dependent on ITSA ORT readiness — updated to 9/12/26</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>ACTION ITEMS: Project team to assist with BEAD location set up for testing; Jonas to assist with shipment of equipment to ORT team for testing; Devesh to schedule IE to ORT handoff</td>
+              <td contenteditable="true" data-editable data-editable data-editable>ORT Testing: Estimated 2–3 weeks. Target dependent on ITSA ORT readiness — updated to 9/12/26</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr class="org-group-start">
               <td class="org-cell">Billing</td>
-              <td contenteditable="true">Billing Design</td>
-              <td contenteditable="true">David Lam</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Billing Design</td>
+              <td contenteditable="true" data-editable data-editable data-editable>David Lam</td>
               <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
-              <td contenteditable="true">Billing Validation &amp; QA Testing completed 2/23/26. 4/22: Option 2 approved — Production equipment codes End Entry Dated (EED) in biller; lower environment available for all teams for testing. BRF-42033 moving forward; Jonas D sent official confirmation. Billing team (David, Freda, Naushad) remain available to support launch</td>
-              <td contenteditable="true">BRF-42033 — Moving forward. EED new equipment code in the biller to be activated on 5/5/26</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Billing Validation &amp; QA Testing completed 2/23/26. 4/22: Option 2 approved — Production equipment codes End Entry Dated (EED) in biller; lower environment available for all teams for testing. BRF-42033 moving forward; Jonas D sent official confirmation. Billing team (David, Freda, Naushad) remain available to support launch</td>
+              <td contenteditable="true" data-editable data-editable data-editable>BRF-42033 — Moving forward. EED new equipment code in the biller to be activated on 5/5/26</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr class="org-group-start">
               <td class="org-cell" rowspan="2">Cust Ops</td>
-              <td contenteditable="true">AOS/IOS/Buyflow</td>
-              <td contenteditable="true">Wendy Shelton / Todd Roadarmel</td>
+              <td contenteditable="true" data-editable data-editable data-editable>AOS/IOS/Buyflow</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Wendy Shelton / Todd Roadarmel</td>
               <td><span class="badge badge-complete" onclick="cycleBadge(this)">Complete</span></td>
-              <td contenteditable="true">Handed off to PMO</td>
-              <td contenteditable="true">CCTCS-13929: Ticket closed on 1/7/26 for no impact</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Handed off to PMO</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CCTCS-13929: Ticket closed on 1/7/26 for no impact</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">Operational Readiness</td>
-              <td contenteditable="true">MacDaniel Ellis</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Operational Readiness</td>
+              <td contenteditable="true" data-editable data-editable data-editable>MacDaniel Ellis</td>
               <td><span class="badge badge-planning" onclick="cycleBadge(this)">Planning</span></td>
-              <td contenteditable="true">Knowledge article updates (Co-Pilot), any sales ops communication, etc</td>
-              <td contenteditable="true">Target Q3</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Knowledge article updates (Co-Pilot), any sales ops communication, etc</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Target Q3</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr class="org-group-start">
               <td class="org-cell" rowspan="2">Procurement</td>
-              <td contenteditable="true">CPE Vendor Award</td>
-              <td contenteditable="true">Keith Kastenholz</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CPE Vendor Award</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Keith Kastenholz</td>
               <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
-              <td contenteditable="true">Sagemcom selected as vendor on 3/2/26</td>
-              <td contenteditable="true">Awaiting device certification to proceed with award. Device certification is dependent on production schedule which is targeted to be received by Sagemcom in April 2026. Target October 2026</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Sagemcom selected as vendor on 3/2/26</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Awaiting device certification to proceed with award. Device certification is dependent on production schedule which is targeted to be received by Sagemcom in April 2026. Target October 2026</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">Reporting</td>
-              <td contenteditable="true">Michael Vail</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Reporting</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Michael Vail</td>
               <td><span class="badge badge-planning" onclick="cycleBadge(this)">Planning</span></td>
-              <td contenteditable="true">Awaiting state level reporting standards still in development</td>
-              <td contenteditable="true">Reporting standards to be developed at State level once agreements are executed — target Q3</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Awaiting state level reporting standards still in development</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Reporting standards to be developed at State level once agreements are executed — target Q3</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr class="org-group-start">
               <td class="org-cell" rowspan="2">Supply Chain</td>
-              <td contenteditable="true">CHAT</td>
-              <td contenteditable="true">Makayla Rox</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CHAT</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Makayla Rox</td>
               <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
-              <td contenteditable="true">CPEAM and Tote matrix have the SONU BABA platform added. ASN work complete. CPE matrix updated. MMID available. Model mapping complete. Remaining work: process alignment with CTDI and supply chain for handling real BABA units — segregation from standard inventory, restickering considerations, clean-and-screen handling, ASN file handling, separate storage/return-loop planning. Makayla to set up CTDI discussion.</td>
-              <td contenteditable="true">Model mapping ✓, ASN ✓, CPE matrix ✓, MMID ✓. Open: CTDI clean-and-screen, segregation, return-loop process for real BABA units.</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>CPEAM and Tote matrix have the SONU BABA platform added. ASN work complete. CPE matrix updated. MMID available. Model mapping complete. Remaining work: process alignment with CTDI and supply chain for handling real BABA units — segregation from standard inventory, restickering considerations, clean-and-screen handling, ASN file handling, separate storage/return-loop planning. Makayla to set up CTDI discussion.</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Model mapping ✓, ASN ✓, CPE matrix ✓, MMID ✓. Open: CTDI clean-and-screen, segregation, return-loop process for real BABA units.</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">Inventory</td>
-              <td contenteditable="true">Michele Sakovitch</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Inventory</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Michele Sakovitch</td>
               <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
-              <td contenteditable="true">Updated forecast communicated to Sagemcom on 4/15/26. Monitoring inbound PO timing for additional HW 17 devices</td>
-              <td contenteditable="true">Updated forecast: 16k devices by Jan 2027, with 4500 per month thereafter — Completed 4/14</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Updated forecast communicated to Sagemcom on 4/15/26. Monitoring inbound PO timing for additional HW 17 devices</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Updated forecast: 16k devices by Jan 2027, with 4500 per month thereafter — Completed 4/14</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr class="org-group-start">
               <td class="org-cell" rowspan="3">Field Ops</td>
-              <td contenteditable="true">Tech Mobile</td>
-              <td contenteditable="true">Victoria Savarino</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Tech Mobile</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Victoria Savarino</td>
               <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
-              <td contenteditable="true">Full Phase 1 MVP scope documented: BEAD indicator, Managed Equipment DQ check, Job Close DQ re-check. Sagar Taneja delivering process flow</td>
-              <td contenteditable="true">SAIE testing window updated to 6/23–8/04. Victoria → Fred: Confirm SLP address logic + SONU model number sufficient for FSM routing 4/30. Sagar Taneja → Devesh: Process flow + Figma 4/30</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Full Phase 1 MVP scope documented: BEAD indicator, Managed Equipment DQ check, Job Close DQ re-check. Sagar Taneja delivering process flow</td>
+              <td contenteditable="true" data-editable data-editable data-editable>SAIE testing window updated to 6/23–8/04. Victoria → Fred: Confirm SLP address logic + SONU model number sufficient for FSM routing 4/30. Sagar Taneja → Devesh: Process flow + Figma 4/30</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">NFS</td>
-              <td contenteditable="true">Victoria Savarino</td>
+              <td contenteditable="true" data-editable data-editable data-editable>NFS</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Victoria Savarino</td>
               <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
-              <td contenteditable="true">No intake required confirmed. LOE updated to 3 weeks (1 build + 2 testing). Open item flagged: Victoria to confirm FSM routing logic with Fred</td>
-              <td contenteditable="true">FON Newsletter in Panorama (Field Operations Newsletter) Target Q3</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>No intake required confirmed. LOE updated to 3 weeks (1 build + 2 testing). Open item flagged: Victoria to confirm FSM routing logic with Fred</td>
+              <td contenteditable="true" data-editable data-editable data-editable>FON Newsletter in Panorama (Field Operations Newsletter) Target Q3</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
             <tr class="row-blocked">
-              <td contenteditable="true">PRISM</td>
-              <td contenteditable="true">Tonnyia Colon</td>
+              <td contenteditable="true" data-editable data-editable data-editable>PRISM</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Tonnyia Colon</td>
               <td><span class="badge badge-blocked" onclick="cycleBadge(this)">Blocked</span></td>
-              <td contenteditable="true">⛔ BLOCKED (4/20): Scott Wilgur confirmed no further PRISM development. Blocked by SAP Work Order Application issues in PNG. No unblock date. Leadership aware up to Paul Woelk. UPDATE (4/28): Jonas, Manoj, and Kris met 4/24 — per Manoj, PRISM is NOT needed until BABA construction material starts coming in. Will not block ITSA guardrail testing or moves to Prod. If PNG is exceptionally delayed, SAP may develop to 'classic' Prism as fallback. No material impact to test cases or readiness if dates hold through 1/4.</td>
-              <td contenteditable="true">No unblock date for PNG. Fallback: SAP classic Prism development possible if needed. No impact to ITSA testing or prod moves. Communicate to broader audience.</td>
-              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>⛔ BLOCKED (4/20): Scott Wilgur confirmed no further PRISM development. Blocked by SAP Work Order Application issues in PNG. No unblock date. Leadership aware up to Paul Woelk. UPDATE (4/28): Jonas, Manoj, and Kris met 4/24 — per Manoj, PRISM is NOT needed until BABA construction material starts coming in. Will not block ITSA guardrail testing or moves to Prod. If PNG is exceptionally delayed, SAP may develop to 'classic' Prism as fallback. No material impact to test cases or readiness if dates hold through 1/4.</td>
+              <td contenteditable="true" data-editable data-editable data-editable>No unblock date for PNG. Fallback: SAP classic Prism development possible if needed. No impact to ITSA testing or prod moves. Communicate to broader audience.</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1186,14 +1187,14 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">✓ Sent official email confirming Billing Option 2 (EED approach)</td>
-              <td contenteditable="true">Done 4/22</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">4/22/26</td>
+              <td contenteditable="true" data-editable data-editable data-editable>✓ Sent official email confirming Billing Option 2 (EED approach)</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Done 4/22</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">4/22/26</td>
             </tr>
             <tr>
-              <td contenteditable="true">Ask the larger BEAD program/construction team whether BEAD-compliant OLTs exist or are being sourced for ORT, and clarify how compliant OLT testing should work in production vs. lab scenarios. (Jason Henricks to hold ORT discussions until this is answered.)</td>
-              <td contenteditable="true">ASAP — Jason holding ORT discussions pending this answer</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Ask the larger BEAD program/construction team whether BEAD-compliant OLTs exist or are being sourced for ORT, and clarify how compliant OLT testing should work in production vs. lab scenarios. (Jason Henricks to hold ORT discussions until this is answered.)</td>
+              <td contenteditable="true" data-editable data-editable data-editable>ASAP — Jason holding ORT discussions pending this answer</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1220,14 +1221,14 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">End Entry Date (EED) production equipment codes in biller — notify all teams once complete. BRF-42033 to move forward.</td>
-              <td contenteditable="true">This week</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>End Entry Date (EED) production equipment codes in biller — notify all teams once complete. BRF-42033 to move forward.</td>
+              <td contenteditable="true" data-editable data-editable data-editable>This week</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">Monitor EED 2-week warranty window — escalate if ORT dates not confirmed before window expires (new BDSI required if missed)</td>
-              <td contenteditable="true">Ongoing</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Monitor EED 2-week warranty window — escalate if ORT dates not confirmed before window expires (new BDSI required if missed)</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Ongoing</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1254,19 +1255,19 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">✓ Confirmed 30 offshore HW 1.7 units expedited — ETA from Joel by end of week 4/25</td>
-              <td contenteditable="true">Done 4/21</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">4/25/26</td>
+              <td contenteditable="true" data-editable data-editable data-editable>✓ Confirmed 30 offshore HW 1.7 units expedited — ETA from Joel by end of week 4/25</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Done 4/21</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">4/25/26</td>
             </tr>
             <tr>
-              <td contenteditable="true">Provide updated device unit counts to Sagemcom (Joel Tyus)</td>
-              <td contenteditable="true">EOD 4/22</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">4/22/26</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Provide updated device unit counts to Sagemcom (Joel Tyus)</td>
+              <td contenteditable="true" data-editable data-editable data-editable>EOD 4/22</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">4/22/26</td>
             </tr>
             <tr>
-              <td contenteditable="true">Finalize and share device count table for real BABA units including serial dongle requirements. Provide Sagemcom working count of 90; follow up with ORT quantities once Jonas confirms OLT situation. Coordinate mock device distribution: Denver (ITSA/C-Tech 5, Sagemcom Denver 2–3), remainder to Town &amp; Country MO. Reach out to Rob Stone re: supply chain ops, inventory routing, and handling process for real BABA devices (especially serial dongle units).</td>
-              <td contenteditable="true">Mock devices arriving 4/29. Real BABA count due ASAP.</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Finalize and share device count table for real BABA units including serial dongle requirements. Provide Sagemcom working count of 90; follow up with ORT quantities once Jonas confirms OLT situation. Coordinate mock device distribution: Denver (ITSA/C-Tech 5, Sagemcom Denver 2–3), remainder to Town &amp; Country MO. Reach out to Rob Stone re: supply chain ops, inventory routing, and handling process for real BABA devices (especially serial dongle units).</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Mock devices arriving 4/29. Real BABA count due ASAP.</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1293,14 +1294,14 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">Maintain CH capability risk tracking; continue tracking ITSA schedule</td>
-              <td contenteditable="true">Ongoing</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Maintain CH capability risk tracking; continue tracking ITSA schedule</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Ongoing</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
             <tr>
-              <td contenteditable="true">Coordinate with Devesh / program on SAIE scope updates (NICE / Tech Mobile)</td>
-              <td contenteditable="true">Ongoing</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Coordinate with Devesh / program on SAIE scope updates (NICE / Tech Mobile)</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Ongoing</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1327,14 +1328,14 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">Share outcome of meeting with Kelley Rapoza (SAIE Sr. Director) on HW 1.7 mock-up acceptability — met 4/21</td>
-              <td contenteditable="true">EOD 4/22</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">4/22/26</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Share outcome of meeting with Kelley Rapoza (SAIE Sr. Director) on HW 1.7 mock-up acceptability — met 4/21</td>
+              <td contenteditable="true" data-editable data-editable data-editable>EOD 4/22</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">4/22/26</td>
             </tr>
             <tr>
-              <td contenteditable="true">Hold additional ORT-related discussions until Jonas confirms whether BEAD-compliant OLTs exist for ORT. Resume once OLT/compliance question is answered.</td>
-              <td contenteditable="true">Pending Jonas OLT answer</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Hold additional ORT-related discussions until Jonas confirms whether BEAD-compliant OLTs exist for ORT. Resume once OLT/compliance question is answered.</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Pending Jonas OLT answer</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1361,14 +1362,14 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">Complete QA testing → move code to UAT (~3rd week of May due to COX priority)</td>
-              <td contenteditable="true">UAT ~mid May</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">Mid May</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Complete QA testing → move code to UAT (~3rd week of May due to COX priority)</td>
+              <td contenteditable="true" data-editable data-editable data-editable>UAT ~mid May</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">Mid May</td>
             </tr>
             <tr>
-              <td contenteditable="true">Ensure 88 UAT locations ready for ITSA (QA link workaround in place)</td>
-              <td contenteditable="true">By 4/24 EOD</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">4/24/26</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Ensure 88 UAT locations ready for ITSA (QA link workaround in place)</td>
+              <td contenteditable="true" data-editable data-editable data-editable>By 4/24 EOD</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">4/24/26</td>
             </tr>
           </tbody>
         </table>
@@ -1395,14 +1396,14 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">✓ Document Tech Mobile changes/scope → send to Devesh for SAIE review</td>
-              <td contenteditable="true">Done 4/20</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">4/20/26</td>
+              <td contenteditable="true" data-editable data-editable data-editable>✓ Document Tech Mobile changes/scope → send to Devesh for SAIE review</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Done 4/20</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">4/20/26</td>
             </tr>
             <tr>
-              <td contenteditable="true">Confirm with Fred whether SLP address-level logic + SONU model number on order is sufficient to translate into FSM routing</td>
-              <td contenteditable="true">Open item</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Confirm with Fred whether SLP address-level logic + SONU model number on order is sufficient to translate into FSM routing</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Open item</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1429,9 +1430,9 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">Set up discussion with CTDI/third-party vendor contacts to confirm clean-and-screen, segregation, storage, restickering, and return-loop handling for real BABA devices</td>
-              <td contenteditable="true">Include Kris, Jonas, and Michele Sakovitch in return-loop / clean-and-screen conversation</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Set up discussion with CTDI/third-party vendor contacts to confirm clean-and-screen, segregation, storage, restickering, and return-loop handling for real BABA devices</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Include Kris, Jonas, and Michele Sakovitch in return-loop / clean-and-screen conversation</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1458,9 +1459,9 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">Add CPE Ops certification and related testing to the broader release/testing schedule and confirm bandwidth or flag any issues</td>
-              <td contenteditable="true">Halina confirmed OK to run in parallel. Release management must fit into broader production testing schedule. 15 real BABA units needed. Location TBD (Charlotte?).</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Add CPE Ops certification and related testing to the broader release/testing schedule and confirm bandwidth or flag any issues</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Halina confirmed OK to run in parallel. Release management must fit into broader production testing schedule. 15 real BABA units needed. Location TBD (Charlotte?).</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1487,9 +1488,9 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">Confirm with the SAI team how many real BABA devices they will actually need — likely do not need the full 20+ mock quantity</td>
-              <td contenteditable="true">Current working count: 10 real BABA units for SAIE (T&amp;C). Confirm actual need.</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Confirm with the SAI team how many real BABA devices they will actually need — likely do not need the full 20+ mock quantity</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Current working count: 10 real BABA units for SAIE (T&amp;C). Confirm actual need.</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1516,9 +1517,9 @@ tr.gantt-cat td {
           </thead>
           <tbody>
             <tr class="org-group-start">
-              <td contenteditable="true">Communicate PRISM conclusion in meeting notes to wider audience: PRISM not needed until BABA construction material starts coming in. Will not block ITSA testing or prod moves. No material impact if dates hold through 1/4. SAP classic Prism fallback possible if PNG exceptionally delayed.</td>
-              <td contenteditable="true">Per Manoj — confirmed 4/24 meeting with Jonas, Manoj, and Kris. Rai/Manoj K to correct if needed.</td>
-              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Communicate PRISM conclusion in meeting notes to wider audience: PRISM not needed until BABA construction material starts coming in. Will not block ITSA testing or prod moves. No material impact if dates hold through 1/4. SAP classic Prism fallback possible if PNG exceptionally delayed.</td>
+              <td contenteditable="true" data-editable data-editable data-editable>Per Manoj — confirmed 4/24 meeting with Jonas, Manoj, and Kris. Rai/Manoj K to correct if needed.</td>
+              <td contenteditable="true" data-editable data-editable data-editable data-date-required="true" data-action-date="true">[TARGET DATE]</td>
             </tr>
           </tbody>
         </table>
@@ -1766,6 +1767,18 @@ async function hashInput(str) {
 function applyLockState(locked) {
   const btn    = document.getElementById('header-lock-btn');
   const banner = document.getElementById('readonly-banner');
+
+  // Actually enable/disable editing at the DOM level — CSS alone doesn't block keyboard input
+  document.querySelectorAll('[data-editable]').forEach(el => {
+    el.contentEditable = locked ? 'false' : 'true';
+  });
+
+  // Disable/enable badge cycling
+  document.querySelectorAll('.badge').forEach(b => {
+    b.style.pointerEvents = locked ? 'none' : '';
+    b.style.cursor = locked ? 'default' : 'pointer';
+  });
+
   if (locked) {
     document.body.classList.add('locked');
     btn.textContent = '🔒 Locked';
