@@ -1,0 +1,1808 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEAD/BABA SONU — Product CPE Dashboard</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+  background: #f7f8fa;
+  color: #1a2e44;
+  overflow-x: hidden;
+  font-size: 14px;
+  line-height: 1.5;
+}
+[contenteditable]:focus { outline: 2px solid #0073CF44; border-radius: 3px; }
+
+/* ===== TOP HEADER ===== */
+#top-header {
+  background: linear-gradient(135deg, #0073CF 0%, #00A0C6 60%, #00A651 100%);
+  height: 48px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+#top-header .header-left .title {
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.2;
+}
+#top-header .header-left .subtitle {
+  color: rgba(255,255,255,0.72);
+  font-size: 12px;
+}
+#top-header .header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#header-date {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+  padding: 3px 10px;
+  min-width: 130px;
+  text-align: center;
+  cursor: text;
+}
+.header-btn {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 5px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.header-btn:hover { background: rgba(255,255,255,0.28); }
+#header-lock-btn.unlocked {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.6);
+}
+.header-accent-line {
+  height: 3px;
+  background: linear-gradient(135deg, #0073CF 0%, #00A0C6 60%, #00A651 100%);
+}
+
+/* ===== TAB BAR ===== */
+#tab-bar {
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: flex-end;
+  padding: 0 28px;
+  position: sticky;
+  top: 48px;
+  z-index: 99;
+  gap: 0;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 14px 22px 11px;
+  font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+  font-size: 14px;
+  color: #4a5568;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: #0073CF; background: #f0f7ff; }
+.tab-btn.active {
+  color: #0073CF;
+  font-weight: 700;
+  border-bottom: 3px solid #0073CF;
+  background: #fff;
+}
+
+/* ===== TAB CONTENT ===== */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.tab-content-area {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Workstream tab gets more horizontal room */
+#tab-workstream .tab-content-area {
+  max-width: 100%;
+  padding: 20px 32px;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  border: 1px solid #e8edf3;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+}
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a2e44;
+  border-left: 3px solid #0073CF;
+  padding-left: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.status-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.dot-green { background: #00A651; }
+.dot-amber { background: #d97706; }
+.dot-red { background: #dc2626; }
+
+/* ===== EXEC SUMMARY LAYOUT ===== */
+.exec-grid {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 0;
+}
+@media (max-width: 900px) {
+  .exec-grid { grid-template-columns: 1fr; }
+}
+/* Full-width row below the two-column grid */
+.exec-full-row {
+  margin-top: 18px;
+}
+
+/* ===== STATUS SUMMARY ===== */
+.status-summary-text {
+  font-size: 14px;
+  color: #4a5568;
+  line-height: 1.6;
+  border-left: 3px solid #0073CF;
+  padding-left: 12px;
+}
+
+/* ===== BULLET LIST ===== */
+.editable-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.editable-list li {
+  padding: 6px 0 6px 18px;
+  position: relative;
+  color: #4a5568;
+  font-size: 13.5px;
+  line-height: 1.55;
+  border-bottom: 1px solid #f0f4f8;
+}
+.editable-list li:last-child { border-bottom: none; }
+.editable-list li::before {
+  content: '•';
+  position: absolute;
+  left: 4px;
+  color: #0073CF;
+  font-weight: 700;
+}
+
+/* ===== WORKSTREAM ROLLUP TABLE ===== */
+.rollup-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.rollup-table th {
+  background: #2d4a6b;
+  color: #fff;
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+.rollup-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
+  vertical-align: middle;
+}
+.rollup-table tr:nth-child(even) td { background: #f7f8fa; }
+.rollup-table tr:hover td { background: #f0f7ff; }
+
+/* ===== BADGES ===== */
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  min-width: 76px;
+  text-align: center;
+}
+.badge-on-target  { background: #d1fae5; color: #065f46; }
+.badge-at-risk    { background: #fef3c7; color: #92400e; }
+.badge-off-target { background: #fee2e2; color: #991b1b; }
+.badge-planning   { background: #ede9fe; color: #5b21b6; }
+.badge-complete   { background: #dbeafe; color: #1e40af; }
+.badge-blocked    { background: #fee2e2; color: #991b1b; font-weight: 700; }
+
+/* ===== MILESTONE TIMELINE ===== */
+.milestone-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.milestone-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid #f0f4f8;
+  font-size: 13px;
+}
+.milestone-item:last-child { border-bottom: none; }
+.milestone-date {
+  background: #f0f7ff;
+  color: #0073CF;
+  border: 1px solid #bee3f8;
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  min-width: 72px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.milestone-text { color: #4a5568; line-height: 1.4; }
+.milestone-complete .milestone-text { color: #a0aec0; text-decoration: line-through; }
+.milestone-complete .milestone-date { background: #f0fff4; color: #276749; border-color: #9ae6b4; }
+.milestone-risk .milestone-text { color: #b7791f; }
+.milestone-launch .milestone-text { color: #0073CF; font-weight: 700; }
+
+/* ===== RISK TABLE ===== */
+.risk-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.risk-table th {
+  background: #2d4a6b;
+  color: #fff;
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+}
+.risk-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
+  vertical-align: top;
+}
+.risk-table tr:nth-child(even) td { background: #f7f8fa; }
+.impact-critical { color: #991b1b; font-weight: 700; font-size: 11px; }
+.impact-high { color: #92400e; font-weight: 700; font-size: 11px; }
+
+/* ===== BOTTOM LINE BOX ===== */
+.bottom-line-box {
+  border-left: 4px solid #0073CF;
+  background: #f0f7ff;
+  border-radius: 0 6px 6px 0;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #1a2e44;
+  line-height: 1.6;
+}
+
+/* ===== WORKSTREAM DETAILS ===== */
+.presenter-section {
+  margin-bottom: 32px;
+}
+.presenter-header {
+  background: linear-gradient(to right, #e8f4ff, #e6f7f0);
+  border-left: 4px solid #0073CF;
+  border-radius: 6px 6px 0 0;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 18px;
+}
+.presenter-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a2e44;
+  letter-spacing: 0.2px;
+}
+.presenter-role {
+  font-size: 12px;
+  color: #4a5568;
+  font-weight: 400;
+  margin-top: 1px;
+}
+.date-counter-pill {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.date-counter-pill.has-missing {
+  background: #fff5f5;
+  color: #c53030;
+  border: 1px solid #feb2b2;
+}
+.date-counter-pill.all-good {
+  background: #f0fff4;
+  color: #276749;
+  border: 1px solid #9ae6b4;
+}
+/* Table connects flush to the banner */
+.presenter-section .ws-table-wrap {
+  border-radius: 0 0 8px 8px;
+  border-top: none;
+}
+
+/* ===== WORKSTREAM TABLE ===== */
+.ws-table-wrap {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #e8edf3;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.ws-table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.ws-table colgroup col:nth-child(1) { width: 10%; }
+.ws-table colgroup col:nth-child(2) { width: 11%; }
+.ws-table colgroup col:nth-child(3) { width: 10%; }
+.ws-table colgroup col:nth-child(4) { width: 8%; }
+.ws-table colgroup col:nth-child(5) { width: 36%; }
+.ws-table colgroup col:nth-child(6) { width: 18%; }
+.ws-table colgroup col:nth-child(7) { width: 7%; }
+.ws-table thead th {
+  background: #2d4a6b;
+  color: #fff;
+  padding: 9px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.ws-table tbody td {
+  padding: 9px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
+  vertical-align: middle;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.ws-table tbody tr:nth-child(even) td { background: #f7f8fa; }
+.ws-table tbody tr:nth-child(odd) td { background: #fff; }
+.ws-table tbody tr.row-blocked td { background: #fff5f5 !important; }
+.ws-table tbody tr.org-group-start td { border-top: 2px solid #e2e8f0; }
+.ws-table td.org-cell {
+  font-weight: 700;
+  color: #0073CF;
+  background: #f0f7ff !important;
+  border-right: 2px solid #0073CF;
+  font-size: 11.5px;
+}
+
+/* ===== DATE VALIDATION ===== */
+td.date-missing {
+  background: #fff5f5 !important;
+  box-shadow: inset 0 0 0 2px #fc8181;
+  color: #c53030;
+  position: relative;
+}
+td.date-missing::after {
+  content: '⚠';
+  position: absolute;
+  top: 2px; right: 3px;
+  font-size: 8px;
+  color: #e53e3e;
+}
+td.date-ok {
+  color: #276749;
+  background: #f0fff4 !important;
+}
+
+/* ===== SHAREPOINT TAB ===== */
+.sp-card {
+  max-width: 520px;
+  margin: 60px auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  border: 1px solid #e8edf3;
+  border-top: 3px solid #0073CF;
+  padding: 48px 40px;
+  text-align: center;
+}
+.sp-icon { font-size: 48px; margin-bottom: 16px; }
+.sp-title { font-size: 20px; font-weight: 700; color: #1a2e44; margin-bottom: 10px; }
+.sp-desc { font-size: 14px; color: #4a5568; margin-bottom: 28px; line-height: 1.6; }
+.sp-btn {
+  display: inline-block;
+  background: #0073CF;
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+.sp-btn:hover { background: #005fa3; }
+.sp-note { margin-top: 20px; font-size: 12px; color: #718096; }
+
+/* ===== FIXED SAVE INDICATOR ===== */
+#save-indicator {
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #4a5568;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 200;
+  opacity: 0.45;
+  transition: opacity 0.4s;
+}
+#save-indicator.visible { opacity: 1; }
+/* Read-only overlay banner */
+#readonly-banner {
+  position: fixed;
+  top: 51px;
+  left: 0; right: 0;
+  background: #1a2e44;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  padding: 5px;
+  z-index: 98;
+  transition: opacity 0.3s;
+}
+#readonly-banner.hidden { display: none; }
+
+/* Locked state — disable visual editing cues */
+body.locked [contenteditable="true"] {
+  cursor: default;
+  pointer-events: none;
+}
+body.locked .badge {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ===== PRINT ===== */
+@media print {
+  #top-header { position: static; }
+  #tab-bar { position: static; }
+  .tab-panel { display: block !important; page-break-before: always; }
+  .tab-panel:first-of-type { page-break-before: avoid; }
+  #save-indicator, #readonly-banner { display: none; }
+}
+
+/* ===== GANTT TIMELINE ===== */
+.gantt-wrap { overflow-x: auto; }
+.gantt-table { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 600px; }
+.gantt-table .gantt-label {
+  width: 150px; min-width: 150px; padding: 4px 8px 4px 16px;
+  color: #4a5568; font-size: 11px; white-space: nowrap;
+  border-bottom: 1px solid #f0f4f8;
+}
+.gantt-table .gantt-label.sub { padding-left: 24px; }
+.gantt-table .gantt-month {
+  padding: 3px 2px; border-bottom: 1px solid #f0f4f8;
+  border-left: 1px solid #f0f4f8; vertical-align: middle;
+}
+.gantt-table thead th {
+  background: #f7f8fa; color: #718096; font-size: 10px;
+  font-weight: 700; text-align: center; padding: 6px 2px;
+  border-bottom: 2px solid #e2e8f0; letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.gantt-table thead th:first-child { text-align: left; padding-left: 16px; }
+tr.gantt-cat td {
+  background: #2d4a6b; color: #fff; font-size: 11px;
+  font-weight: 700; padding: 5px 12px; letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+.bar { height: 10px; border-radius: 3px; }
+.bar-complete  { background: #00A651; }
+.bar-progress  { background: #0073CF; }
+.bar-at-risk   { background: #d97706; }
+.bar-planning  { background: #a78bfa; }
+.bar-blocked   { background: #fc8181; }
+.gantt-diamond { text-align: center; color: #d97706; font-size: 14px; line-height: 1; }
+.gantt-launch  { text-align: center; color: #0073CF; font-size: 10px; font-weight: 700; }
+.gantt-legend {
+  display: flex; gap: 18px; flex-wrap: wrap;
+  margin-top: 12px; font-size: 11px; color: #718096; align-items: center;
+}
+/* Tighter padding on the gantt card */
+.card.gantt-card { padding: 16px 18px; }
+</style>
+</head>
+<body>
+
+<!-- ===== TOP HEADER ===== -->
+<div id="top-header">
+  <div class="header-left">
+    <div class="title">BEAD/BABA SONU — Product CPE</div>
+    <div class="subtitle">Weekly Cross-Functional Update</div>
+  </div>
+  <div class="header-right">
+    <div id="header-date" contenteditable="true"></div>
+    <button id="header-lock-btn" class="header-btn locked" onclick="toggleLock()">🔒 Locked</button>
+    <button class="header-btn" onclick="window.print()">Export PDF</button>
+  </div>
+</div>
+<div class="header-accent-line"></div>
+
+<!-- ===== TAB BAR ===== -->
+<div id="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('exec')">Executive Summary</button>
+  <button class="tab-btn" onclick="switchTab('workstream')">Workstream Details</button>
+  <button class="tab-btn" onclick="switchTab('actions')">Action Items</button>
+  <button class="tab-btn" onclick="switchTab('sharepoint')">SharePoint Site</button>
+</div>
+
+<!-- ===== TAB 1: EXECUTIVE SUMMARY ===== -->
+<div id="tab-exec" class="tab-panel active">
+  <div class="tab-content-area">
+    <div class="exec-grid">
+
+      <!-- LEFT COLUMN -->
+      <div>
+
+        <!-- Card 1: Program Status -->
+        <div class="card">
+          <div class="card-title">
+            <span class="status-dot dot-green"></span>
+            Program Status
+          </div>
+          <div class="status-summary-text" contenteditable="true">
+            Program in Execution. Core workstreams (ITSA, SLP) on plan. Device testing sequencing confirmed with parallel cert strategy. ORT timing remains open pending BEAD-compliant OLT clarification. PRISM not a blocker for current testing phases.
+          </div>
+        </div>
+
+        <!-- Card 2: New This Week -->
+        <div class="card">
+          <div class="card-title">New This Week</div>
+          <ul class="editable-list" id="new-this-week">
+            <li contenteditable="true">Sagemcom production schedule received (4/22) — BABA test devices confirmed for 6/19 delivery; mass production begins 10/01 (first deliveries 1/04/27)</li>
+            <li contenteditable="true">Gap: Critical testing requires devices by 6/01 — 18-day shortfall vs. confirmed delivery date</li>
+            <li contenteditable="true">PRISM — BLOCKED (4/22): Scott Wilgur (Sr. Director) confirmed no further PRISM development. Blocked by SAP Work Order Application issues in PNG. No unblock date. Leadership aware up to Paul Woelk (EVP).</li>
+            <li contenteditable="true">Billing Option 2 approved (4/22): Production codes EED'd; lower env available for testing; BRF-42033 moving forward</li>
+          </ul>
+        </div>
+
+      </div><!-- end left column -->
+
+      <!-- RIGHT COLUMN -->
+      <div>
+
+        <!-- Card: Risks & Mitigation -->
+        <div class="card">
+          <div class="card-title">Risks &amp; Mitigation</div>
+          <table class="risk-table">
+            <thead>
+              <tr>
+                <th style="width:38%">Risk</th>
+                <th style="width:12%">Impact</th>
+                <th style="width:50%">Mitigation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td contenteditable="true">Real BABA devices needed by 6/01 — Sagemcom can only deliver 6/19 (18-day gap)</td>
+                <td><span class="impact-critical">Critical</span></td>
+                <td contenteditable="true">30 offshore HW 1.7 units expedited; Jason Henricks met with SAIE Sr. Director 4/22 — HW 1.7 mock accepted</td>
+              </tr>
+              <tr>
+                <td contenteditable="true">PRISM blocked by SAP — no development timeline</td>
+                <td><span class="impact-critical">Critical</span></td>
+                <td contenteditable="true">Scott Wilgur confirmed 4/22. ERP Operations and IT conversations ongoing. Leadership aware up to Paul Woelk.</td>
+              </tr>
+              <tr>
+                <td contenteditable="true">Parametric testing (6 wks) blocks CPE/Voice testing and ORT readiness</td>
+                <td><span class="impact-high">High</span></td>
+                <td contenteditable="true">Parallel cert strategy approved — CPE/Voice concurrent with parametric review (Kris Mehling / Jason Henricks)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- end right column -->
+    </div><!-- end exec-grid -->
+
+    <!-- FULL-WIDTH ROW: Program Timeline -->
+    <div class="exec-full-row">
+      <div class="card gantt-card">
+        <div class="card-title">Program Timeline</div>
+        <div class="gantt-wrap">
+          <table class="gantt-table">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding-left:16px;">Workstream</th>
+                <th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th>
+                <th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th><th>Jan'27</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="gantt-cat"><td colspan="12">IT</td></tr>
+              <tr>
+                <td class="gantt-label sub">ITSA Development</td>
+                <td class="gantt-month"><div class="bar bar-progress"></div></td>
+                <td class="gantt-month"><div class="bar bar-progress"></div></td>
+                <td class="gantt-month"><div class="bar bar-progress"></div></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">SA Testing</td>
+                <td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-left:50%"></div></td>
+                <td class="gantt-month"><div class="bar bar-progress"></div></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">SAIE Testing</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-at-risk" style="margin-left:50%"></div></td>
+                <td class="gantt-month"><div class="bar bar-at-risk"></div></td>
+                <td class="gantt-month"><div class="bar bar-at-risk" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">NICE Development</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-left:50%"></div></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">Performance Testing</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-planning"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">ITDA</td>
+                <td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-left:50%"></div></td>
+                <td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-planning" style="margin-left:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">SLP Dev&#8594;QA</td>
+                <td class="gantt-month"><div class="bar bar-complete"></div></td>
+                <td class="gantt-month"><div class="bar bar-complete"></div></td>
+                <td class="gantt-month"><div class="bar bar-complete" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">SLP UAT</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-at-risk" style="margin-left:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">SLP Prod Deploy</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-planning" style="margin-right:75%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">Tech Mobile</td>
+                <td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-left:50%"></div></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">PRISM</td>
+                <td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-blocked" style="margin-left:50%"></div></td>
+                <td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-blocked"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr class="gantt-cat"><td colspan="12">CPE Engineering</td></tr>
+              <tr>
+                <td class="gantt-label sub">IDME Label/Packaging</td>
+                <td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">Parametric Testing</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-at-risk" style="margin-left:50%"></div></td>
+                <td class="gantt-month"><div class="bar bar-at-risk" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">CPE SP + Voice Testing</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-planning"></div></td>
+                <td class="gantt-month"><div class="bar bar-planning" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">CPE Ops Cert/DLM</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-planning" style="margin-left:50%"></div></td>
+                <td class="gantt-month"><div class="bar bar-planning" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr class="gantt-cat"><td colspan="12">Sagemcom</td></tr>
+              <tr>
+                <td class="gantt-label sub">Sagemcom Parametric</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-at-risk" style="margin-left:50%"></div></td>
+                <td class="gantt-month"><div class="bar bar-at-risk" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">Test Units Delivery (6/19)</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month gantt-diamond">&#9670;</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">Mfg &amp; Shipping (10/01&#8594;Jan'27)</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-planning"></div></td>
+                <td class="gantt-month"><div class="bar bar-planning"></div></td>
+                <td class="gantt-month"><div class="bar bar-planning"></div></td>
+                <td class="gantt-month"><div class="bar bar-planning"></div></td>
+              </tr>
+              <tr class="gantt-cat"><td colspan="12">Supply Chain</td></tr>
+              <tr>
+                <td class="gantt-label sub">SAP/ERP (MDG)</td>
+                <td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-at-risk" style="margin-left:50%"></div></td>
+                <td class="gantt-month"><div class="bar bar-at-risk" style="margin-right:50%"></div></td>
+                <td class="gantt-month"><div class="bar bar-at-risk" style="margin-right:75%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">CHAT ASN/CTDI</td>
+                <td class="gantt-month"><div class="bar bar-complete"></div></td>
+                <td class="gantt-month"><div class="bar bar-complete" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr class="gantt-cat"><td colspan="12">Billing</td></tr>
+              <tr>
+                <td class="gantt-label sub">NICE</td>
+                <td class="gantt-month"></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-left:50%"></div></td>
+                <td class="gantt-month"><div class="bar bar-progress" style="margin-right:50%"></div></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr class="gantt-cat"><td colspan="12">Operational Readiness</td></tr>
+              <tr>
+                <td class="gantt-label sub">ORT Testing</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+              </tr>
+              <tr>
+                <td class="gantt-label sub">&#x1F680; Charter Launch Ready</td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month"></td><td class="gantt-month"></td><td class="gantt-month"></td>
+                <td class="gantt-month gantt-launch"><strong>&#x1F680; Jan '27</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="gantt-legend">
+          <span><span class="bar bar-complete" style="display:inline-block;width:20px;vertical-align:middle;margin-right:4px"></span>Complete</span>
+          <span><span class="bar bar-progress" style="display:inline-block;width:20px;vertical-align:middle;margin-right:4px"></span>In Progress</span>
+          <span><span class="bar bar-at-risk" style="display:inline-block;width:20px;vertical-align:middle;margin-right:4px"></span>At Risk</span>
+          <span><span class="bar bar-planning" style="display:inline-block;width:20px;vertical-align:middle;margin-right:4px"></span>Planning</span>
+          <span><span class="bar bar-blocked" style="display:inline-block;width:20px;vertical-align:middle;margin-right:4px"></span>Blocked</span>
+        </div>
+      </div>
+    </div><!-- end exec-full-row -->
+
+  </div>
+</div><!-- end tab-exec -->
+
+<!-- ===== TAB 2: WORKSTREAM DETAILS ===== -->
+<div id="tab-workstream" class="tab-panel">
+  <div class="tab-content-area">
+
+    <!-- ANTHONY BATISTE -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Anthony Batiste</div>
+          <div class="presenter-role">Program Manager: ITSA / ITDA</div>
+        </div>
+        <span class="date-counter-pill" id="pill-anthony"></span>
+      </div>
+      <div class="ws-table-wrap">
+        <table class="ws-table" id="table-anthony">
+          <colgroup>
+            <col><col><col><col><col><col><col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Organization</th>
+              <th>Workstream</th>
+              <th>POC</th>
+              <th>Status</th>
+              <th>Status Update</th>
+              <th>Deliverable / Milestone</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td class="org-cell" rowspan="2">SDIT</td>
+              <td contenteditable="true">ITSA</td>
+              <td contenteditable="true">Anthony Batiste</td>
+              <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
+              <td contenteditable="true">Working with CHAT / Biller to get data setup for testing, ETA 4/24. 3/13–6/05: ITSA Development (In Progress). 5/07–6/19: ITSA Testing. 5/27–6/10: NICE Development. 6/11: ITSA to deploy code in MC environment to support NICE QA. 6/11–6/19: NICE QA testing. 6/22: NICE ready for SAIE. 6/22: ITSA Ready for SAIE Testing</td>
+              <td contenteditable="true">Key dependency: R02 in CHCAPABLTY-36204 — BABA complaint devices for testing to be available by 4/15 partially mitigated with 5 of 8 devices (A/O 4/23). 3/13–6/05: ITSA Development. 5/07–6/19: ITSA Testing. 6/23–8/04: SAIE Testing. 7/01–7/15: Performance Testing</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">ITDA</td>
+              <td contenteditable="true">Anthony Batiste</td>
+              <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
+              <td contenteditable="true">ITDA development is delayed for rrbootfile and RDU changes for BABA device onboarding as additional complexity is discovered for L-CHTR, QA ready target to be revised</td>
+              <td contenteditable="true">Development delayed — QA ready target under revision</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr class="org-group-start">
+              <td class="org-cell">Strategic Data Platforms</td>
+              <td contenteditable="true">SLP</td>
+              <td contenteditable="true">Princy (Mary Antony) / Owen Garrity</td>
+              <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
+              <td contenteditable="true">QA testing in progress. Shift in UAT dates due to Cox Integration project (Spec Day 45). New dates TBD. ITSA in agreement to connect to SLP QA to test the API response and locations. BEAD indicators complete for 88 locations in SLP QA for ITSA testing</td>
+              <td contenteditable="true">CHCAPABLTY-34005: 4/10 Database and Services Development (Complete). 4/13–4/30: SLP QA Testing. 4/23–5/01 TBD: SLP UAT, Cox Integration taking priority, currently in UAT. 7/21: SLP Prod Deployment</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- KRIS MEHLING -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Kris Mehling</div>
+          <div class="presenter-role">Program Manager: CPE Engineering</div>
+        </div>
+        <span class="date-counter-pill" id="pill-kris"></span>
+      </div>
+      <div class="ws-table-wrap">
+        <table class="ws-table" id="table-kris">
+          <colgroup>
+            <col><col><col><col><col><col><col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Organization</th>
+              <th>Workstream</th>
+              <th>POC</th>
+              <th>Status</th>
+              <th>Status Update</th>
+              <th>Deliverable / Milestone</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td class="org-cell" rowspan="5">CPE Engineering</td>
+              <td contenteditable="true">CPE Production (Sagemcom)</td>
+              <td contenteditable="true">Kris Mehling</td>
+              <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
+              <td contenteditable="true">Sagemcom model: Fast 5681-US Charter / SONUV15B. Manufacturing confirmed domestic (Vancouver, WA). Three key milestones: (1) 30 mock HW v1.7 devices arriving 4/29 — distributing to ITSA/C-Tech (5), Sagemcom Denver (2–3), remainder to Town &amp; Country MO; (2) actual BABA devices expected 6/19; (3) mass production 10/1–1/4 supporting January demand (~16k units by early Jan, 4,000–5,500/month after). Witness testing removed due to low device risk. CPE cert, voice cert, and CPE Ops cert to run in parallel ~3 weeks after parametric. Kris consolidating device count requests — working count of 90 shared with Sagemcom; ORT quantities to follow.</td>
+              <td contenteditable="true">CPESAGE-426: Mock devices arriving 4/29. Real BABA devices: 6/19. Mass production: 10/1–1/4. Device count table (real BABA): ITSA 40 (T&amp;C), SAIE 10 (T&amp;C), CPE-Jason 10, CPE Ops Cert-Halina 15, CPE Voice-JR 21, Parametrics CTECII 6, IDME 6 (LED firmware required). Total: 108.</td>
+              <td contenteditable="true" data-date-required="true">6/19/26</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">CPE HW Parametric Test Plan</td>
+              <td contenteditable="true">Kris Mehling</td>
+              <td><span class="badge badge-complete" onclick="cycleBadge(this)">Complete</span></td>
+              <td contenteditable="true">Test plan sent to Sagemcom on 3/25</td>
+              <td contenteditable="true">CHCAPABLTY-35779: Complete</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">CPE HW Parametric Cert</td>
+              <td contenteditable="true">Kris Mehling</td>
+              <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
+              <td contenteditable="true">Awaiting Sagemcom BABA test units (expected 6/19). Parametric testing ~8/2. Witness testing waived — low risk accepted given identical BOM to HW v1.7. CPE cert, voice cert, and CPE Ops cert to run in parallel after parametric (~3 weeks).</td>
+              <td contenteditable="true">CHCAPABLTY-35780: Testing audit 3 weeks</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">CPE Cert Testing</td>
+              <td contenteditable="true">Kris Mehling</td>
+              <td><span class="badge badge-planning" onclick="cycleBadge(this)">Planning</span></td>
+              <td contenteditable="true">Awaiting real BABA test units (6/19). To start after Parametric testing. Running in parallel with CPE Voice Testing and CPE Ops Cert. Halina Teague confirmed bandwidth — will fit into broader release/testing schedule.</td>
+              <td contenteditable="true">CHCAPABLTY-35746: To start after Parametric testing is completed. 3 weeks LOE, 8/24–9/11</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">CPE Voice Testing</td>
+              <td contenteditable="true">Kris Mehling</td>
+              <td><span class="badge badge-planning" onclick="cycleBadge(this)">Planning</span></td>
+              <td contenteditable="true">Awaiting real BABA test units (6/19). To start after Parametric testing. Running in parallel with CPE Cert Testing. 21 regular units + 4 w/serial dongle (JR). Matt Wobbe / Kevin York (21 units).</td>
+              <td contenteditable="true">VOXCPE-1631: To start after Parametric testing is completed. 3 weeks LOE, 8/24–9/11. Done in parallel with CPE Cert Testing</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr class="org-group-start">
+              <td class="org-cell" rowspan="2">IDME</td>
+              <td contenteditable="true">Testing</td>
+              <td contenteditable="true">Anders Mavis</td>
+              <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
+              <td contenteditable="true">Awaiting real BABA test units (6/19). 6 units needed. Note: LED firmware must be loaded to test LEDs. Devesh Pandey to confirm actual count needed with SAI team.</td>
+              <td contenteditable="true">1 week LOE, 6/22–6/26. 6 real BABA units required (LED firmware loaded).</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Physical Identifier</td>
+              <td contenteditable="true">Anders Mavis</td>
+              <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
+              <td contenteditable="true">IDME working with Product on the BABA identifiers for the device and packaging</td>
+              <td contenteditable="true">Delivery targeted for 4/30</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr class="org-group-start">
+              <td class="org-cell">ERP Management</td>
+              <td contenteditable="true">SAP</td>
+              <td contenteditable="true">Trevor Mendelson</td>
+              <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
+              <td contenteditable="true">SAP is reliant on the new Master Data Governance (MDG) tool to be in place. Reliant on PNG requirements. Functional specs completed 4/03. Development in progress</td>
+              <td contenteditable="true">5/28</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- JONAS DURHAM -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Jonas Durham</div>
+          <div class="presenter-role">Program Manager: Internet Product</div>
+        </div>
+        <span class="date-counter-pill" id="pill-jonas"></span>
+      </div>
+      <div class="ws-table-wrap">
+        <table class="ws-table" id="table-jonas">
+          <colgroup>
+            <col><col><col><col><col><col><col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Organization</th>
+              <th>Workstream</th>
+              <th>POC</th>
+              <th>Status</th>
+              <th>Status Update</th>
+              <th>Deliverable / Milestone</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td class="org-cell">Business Integration</td>
+              <td contenteditable="true">ORT Testing</td>
+              <td contenteditable="true">Megan Baltrushunas</td>
+              <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
+              <td contenteditable="true">ACTION ITEMS: Project team to assist with BEAD location set up for testing; Jonas to assist with shipment of equipment to ORT team for testing; Devesh to schedule IE to ORT handoff</td>
+              <td contenteditable="true">ORT Testing: Estimated 2–3 weeks. Target dependent on ITSA ORT readiness — updated to 9/12/26</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr class="org-group-start">
+              <td class="org-cell">Billing</td>
+              <td contenteditable="true">Billing Design</td>
+              <td contenteditable="true">David Lam</td>
+              <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
+              <td contenteditable="true">Billing Validation &amp; QA Testing completed 2/23/26. 4/22: Option 2 approved — Production equipment codes End Entry Dated (EED) in biller; lower environment available for all teams for testing. BRF-42033 moving forward; Jonas D sent official confirmation. Billing team (David, Freda, Naushad) remain available to support launch</td>
+              <td contenteditable="true">BRF-42033 — Moving forward. EED new equipment code in the biller to be activated on 5/5/26</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr class="org-group-start">
+              <td class="org-cell" rowspan="2">Cust Ops</td>
+              <td contenteditable="true">AOS/IOS/Buyflow</td>
+              <td contenteditable="true">Wendy Shelton / Todd Roadarmel</td>
+              <td><span class="badge badge-complete" onclick="cycleBadge(this)">Complete</span></td>
+              <td contenteditable="true">Handed off to PMO</td>
+              <td contenteditable="true">CCTCS-13929: Ticket closed on 1/7/26 for no impact</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Operational Readiness</td>
+              <td contenteditable="true">MacDaniel Ellis</td>
+              <td><span class="badge badge-planning" onclick="cycleBadge(this)">Planning</span></td>
+              <td contenteditable="true">Knowledge article updates (Co-Pilot), any sales ops communication, etc</td>
+              <td contenteditable="true">Target Q3</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr class="org-group-start">
+              <td class="org-cell" rowspan="2">Procurement</td>
+              <td contenteditable="true">CPE Vendor Award</td>
+              <td contenteditable="true">Keith Kastenholz</td>
+              <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
+              <td contenteditable="true">Sagemcom selected as vendor on 3/2/26</td>
+              <td contenteditable="true">Awaiting device certification to proceed with award. Device certification is dependent on production schedule which is targeted to be received by Sagemcom in April 2026. Target October 2026</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Reporting</td>
+              <td contenteditable="true">Michael Vail</td>
+              <td><span class="badge badge-planning" onclick="cycleBadge(this)">Planning</span></td>
+              <td contenteditable="true">Awaiting state level reporting standards still in development</td>
+              <td contenteditable="true">Reporting standards to be developed at State level once agreements are executed — target Q3</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr class="org-group-start">
+              <td class="org-cell" rowspan="2">Supply Chain</td>
+              <td contenteditable="true">CHAT</td>
+              <td contenteditable="true">Makayla Rox</td>
+              <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
+              <td contenteditable="true">CPEAM and Tote matrix have the SONU BABA platform added. ASN work complete. CPE matrix updated. MMID available. Model mapping complete. Remaining work: process alignment with CTDI and supply chain for handling real BABA units — segregation from standard inventory, restickering considerations, clean-and-screen handling, ASN file handling, separate storage/return-loop planning. Makayla to set up CTDI discussion.</td>
+              <td contenteditable="true">Model mapping ✓, ASN ✓, CPE matrix ✓, MMID ✓. Open: CTDI clean-and-screen, segregation, return-loop process for real BABA units.</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Inventory</td>
+              <td contenteditable="true">Michele Sakovitch</td>
+              <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
+              <td contenteditable="true">Updated forecast communicated to Sagemcom on 4/15/26. Monitoring inbound PO timing for additional HW 17 devices</td>
+              <td contenteditable="true">Updated forecast: 16k devices by Jan 2027, with 4500 per month thereafter — Completed 4/14</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr class="org-group-start">
+              <td class="org-cell" rowspan="3">Field Ops</td>
+              <td contenteditable="true">Tech Mobile</td>
+              <td contenteditable="true">Victoria Savarino</td>
+              <td><span class="badge badge-on-target" onclick="cycleBadge(this)">On Target</span></td>
+              <td contenteditable="true">Full Phase 1 MVP scope documented: BEAD indicator, Managed Equipment DQ check, Job Close DQ re-check. Sagar Taneja delivering process flow</td>
+              <td contenteditable="true">SAIE testing window updated to 6/23–8/04. Victoria → Fred: Confirm SLP address logic + SONU model number sufficient for FSM routing 4/30. Sagar Taneja → Devesh: Process flow + Figma 4/30</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">NFS</td>
+              <td contenteditable="true">Victoria Savarino</td>
+              <td><span class="badge badge-at-risk" onclick="cycleBadge(this)">At Risk</span></td>
+              <td contenteditable="true">No intake required confirmed. LOE updated to 3 weeks (1 build + 2 testing). Open item flagged: Victoria to confirm FSM routing logic with Fred</td>
+              <td contenteditable="true">FON Newsletter in Panorama (Field Operations Newsletter) Target Q3</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+            <tr class="row-blocked">
+              <td contenteditable="true">PRISM</td>
+              <td contenteditable="true">Tonnyia Colon</td>
+              <td><span class="badge badge-blocked" onclick="cycleBadge(this)">Blocked</span></td>
+              <td contenteditable="true">⛔ BLOCKED (4/20): Scott Wilgur confirmed no further PRISM development. Blocked by SAP Work Order Application issues in PNG. No unblock date. Leadership aware up to Paul Woelk. UPDATE (4/28): Jonas, Manoj, and Kris met 4/24 — per Manoj, PRISM is NOT needed until BABA construction material starts coming in. Will not block ITSA guardrail testing or moves to Prod. If PNG is exceptionally delayed, SAP may develop to 'classic' Prism as fallback. No material impact to test cases or readiness if dates hold through 1/4.</td>
+              <td contenteditable="true">No unblock date for PNG. Fallback: SAP classic Prism development possible if needed. No impact to ITSA testing or prod moves. Communicate to broader audience.</td>
+              <td contenteditable="true" data-date-required="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div><!-- end tab-workstream -->
+
+<!-- ===== TAB 3: ACTION ITEMS ===== -->
+<div id="tab-actions" class="tab-panel">
+  <div class="tab-content-area" style="max-width:100%; padding:20px 32px;">
+
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
+      <div>
+        <div style="font-size:18px; font-weight:700; color:#1a2e44;">Action Items</div>
+        <div style="font-size:12px; color:#718096; margin-top:2px;">Consolidated from 4/21 Sagemcom Sync &amp; 4/22 Billing Sync — grouped by owner</div>
+      </div>
+      <span id="action-missing-pill" class="date-counter-pill has-missing"></span>
+    </div>
+
+    <!-- ── JONAS DURHAM ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Jonas Durham</div>
+          <div class="presenter-role">Program Manager: Internet Product</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-jonas" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">✓ Sent official email confirming Billing Option 2 (EED approach)</td>
+              <td contenteditable="true">Done 4/22</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">4/22/26</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Ask the larger BEAD program/construction team whether BEAD-compliant OLTs exist or are being sourced for ORT, and clarify how compliant OLT testing should work in production vs. lab scenarios. (Jason Henricks to hold ORT discussions until this is answered.)</td>
+              <td contenteditable="true">ASAP — Jason holding ORT discussions pending this answer</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── DAVID LAM ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">David Lam</div>
+          <div class="presenter-role">Billing Design</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-david" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">End Entry Date (EED) production equipment codes in biller — notify all teams once complete. BRF-42033 to move forward.</td>
+              <td contenteditable="true">This week</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Monitor EED 2-week warranty window — escalate if ORT dates not confirmed before window expires (new BDSI required if missed)</td>
+              <td contenteditable="true">Ongoing</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── KRIS MEHLING ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Kris Mehling</div>
+          <div class="presenter-role">Program Manager: CPE Engineering</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-kris" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">✓ Confirmed 30 offshore HW 1.7 units expedited — ETA from Joel by end of week 4/25</td>
+              <td contenteditable="true">Done 4/21</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">4/25/26</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Provide updated device unit counts to Sagemcom (Joel Tyus)</td>
+              <td contenteditable="true">EOD 4/22</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">4/22/26</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Finalize and share device count table for real BABA units including serial dongle requirements. Provide Sagemcom working count of 90; follow up with ORT quantities once Jonas confirms OLT situation. Coordinate mock device distribution: Denver (ITSA/C-Tech 5, Sagemcom Denver 2–3), remainder to Town &amp; Country MO. Reach out to Rob Stone re: supply chain ops, inventory routing, and handling process for real BABA devices (especially serial dongle units).</td>
+              <td contenteditable="true">Mock devices arriving 4/29. Real BABA count due ASAP.</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── ANTHONY BATISTE ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Anthony Batiste</div>
+          <div class="presenter-role">Program Manager: ITSA / ITDA</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-anthony" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">Maintain CH capability risk tracking; continue tracking ITSA schedule</td>
+              <td contenteditable="true">Ongoing</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Coordinate with Devesh / program on SAIE scope updates (NICE / Tech Mobile)</td>
+              <td contenteditable="true">Ongoing</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── JASON HENRICKS ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Jason Henricks</div>
+          <div class="presenter-role">SAIE / CPE Strategy</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-jason" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">Share outcome of meeting with Kelley Rapoza (SAIE Sr. Director) on HW 1.7 mock-up acceptability — met 4/21</td>
+              <td contenteditable="true">EOD 4/22</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">4/22/26</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Hold additional ORT-related discussions until Jonas confirms whether BEAD-compliant OLTs exist for ORT. Resume once OLT/compliance question is answered.</td>
+              <td contenteditable="true">Pending Jonas OLT answer</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── PRINCY MARY ANTONY ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Princy Mary Antony</div>
+          <div class="presenter-role">Strategic Data Platforms — SLP</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-princy" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">Complete QA testing → move code to UAT (~3rd week of May due to COX priority)</td>
+              <td contenteditable="true">UAT ~mid May</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">Mid May</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Ensure 88 UAT locations ready for ITSA (QA link workaround in place)</td>
+              <td contenteditable="true">By 4/24 EOD</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">4/24/26</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── VICTORIA SAVARINO ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Victoria Savarino</div>
+          <div class="presenter-role">Field Ops — Tech Mobile / NFS</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-victoria" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">✓ Document Tech Mobile changes/scope → send to Devesh for SAIE review</td>
+              <td contenteditable="true">Done 4/20</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">4/20/26</td>
+            </tr>
+            <tr>
+              <td contenteditable="true">Confirm with Fred whether SLP address-level logic + SONU model number on order is sufficient to translate into FSM routing</td>
+              <td contenteditable="true">Open item</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── MAKAYLA ROX ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Makayla Rox</div>
+          <div class="presenter-role">Supply Chain — CHAT</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-makayla" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">Set up discussion with CTDI/third-party vendor contacts to confirm clean-and-screen, segregation, storage, restickering, and return-loop handling for real BABA devices</td>
+              <td contenteditable="true">Include Kris, Jonas, and Michele Sakovitch in return-loop / clean-and-screen conversation</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── HALINA TEAGUE ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Halina Teague</div>
+          <div class="presenter-role">CPE Ops Certification / Release Management</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-halina" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">Add CPE Ops certification and related testing to the broader release/testing schedule and confirm bandwidth or flag any issues</td>
+              <td contenteditable="true">Halina confirmed OK to run in parallel. Release management must fit into broader production testing schedule. 15 real BABA units needed. Location TBD (Charlotte?).</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── DEVESH PANDEY ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Devesh Pandey</div>
+          <div class="presenter-role">SAIE Testing</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-devesh" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">Confirm with the SAI team how many real BABA devices they will actually need — likely do not need the full 20+ mock quantity</td>
+              <td contenteditable="true">Current working count: 10 real BABA units for SAIE (T&amp;C). Confirm actual need.</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── PRINCY MARY ANTONY / KRIS MEHLING ── -->
+    <div class="presenter-section">
+      <div class="presenter-header">
+        <div>
+          <div class="presenter-name">Princy Mary Antony / Kris Mehling</div>
+          <div class="presenter-role">PRISM Communication</div>
+        </div>
+      </div>
+      <div class="ws-table-wrap" style="border-radius:0 0 8px 8px; border-top:none;">
+        <table class="ws-table" id="action-table-prism-comms" style="font-size:13px;">
+          <colgroup><col style="width:40%"><col style="width:46%"><col style="width:14%"></colgroup>
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Notes</th>
+              <th>Target Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="org-group-start">
+              <td contenteditable="true">Communicate PRISM conclusion in meeting notes to wider audience: PRISM not needed until BABA construction material starts coming in. Will not block ITSA testing or prod moves. No material impact if dates hold through 1/4. SAP classic Prism fallback possible if PNG exceptionally delayed.</td>
+              <td contenteditable="true">Per Manoj — confirmed 4/24 meeting with Jonas, Manoj, and Kris. Rai/Manoj K to correct if needed.</td>
+              <td contenteditable="true" data-date-required="true" data-action-date="true">[TARGET DATE]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div><!-- end tab-actions -->
+
+<!-- ===== TAB 4: SHAREPOINT SITE ===== -->
+<div id="tab-sharepoint" class="tab-panel">
+  <div class="tab-content-area">
+    <div class="sp-card">
+      <div class="sp-icon">🔗</div>
+      <div class="sp-title">SharePoint Project Site</div>
+      <div class="sp-desc">Access the full BEAD/BABA SONU project documentation, files, and resources on SharePoint.</div>
+      <a class="sp-btn" href="http://chartercom.sharepoint.com/sites/IntCPE/SitePages/BEAD-SONU-Project.aspx" target="_blank" rel="noopener noreferrer">Open SharePoint Site →</a>
+      <div class="sp-note">Note: Requires Charter network access or VPN</div>
+    </div>
+  </div>
+</div><!-- end tab-sharepoint -->
+
+<!-- ===== FIXED UI ===== -->
+<div id="save-indicator">● Saved <span id="save-time"></span></div>
+<div id="readonly-banner">🔒 READ-ONLY — Contact the program manager to request edits</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+(function() {
+  'use strict';
+
+  const STORAGE_KEY = 'bead_sonu_v6';
+
+  // ── Badge cycle ──────────────────────────────────────────────────────────
+  const BADGE_CYCLE = [
+    { label: 'On Target',  cls: 'badge-on-target'  },
+    { label: 'At Risk',    cls: 'badge-at-risk'     },
+    { label: 'Off Target', cls: 'badge-off-target'  },
+    { label: 'Planning',   cls: 'badge-planning'    },
+    { label: 'Complete',   cls: 'badge-complete'    },
+    { label: 'Blocked',    cls: 'badge-blocked'     }
+  ];
+  const BADGE_CLASSES = BADGE_CYCLE.map(b => b.cls);
+
+  window.cycleBadge = function(el) {
+    const current = BADGE_CLASSES.find(c => el.classList.contains(c));
+    const idx = current ? BADGE_CLASSES.indexOf(current) : 0;
+    const next = BADGE_CYCLE[(idx + 1) % BADGE_CYCLE.length];
+    BADGE_CLASSES.forEach(c => el.classList.remove(c));
+    el.classList.add(next.cls);
+    el.textContent = next.label;
+    scheduleSave();
+  };
+
+  // ── Tab switching ────────────────────────────────────────────────────────
+  window.switchTab = function(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    const btns = document.querySelectorAll('.tab-btn');
+    const map = { exec: 0, workstream: 1, actions: 2, sharepoint: 3 };
+    if (btns[map[name]]) btns[map[name]].classList.add('active');
+    validateDates();
+  };
+
+  // ── Auto-date ────────────────────────────────────────────────────────────
+  function formatDate(d) {
+    const months = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+    return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  }
+
+  // ── Date validation ──────────────────────────────────────────────────────
+  const DATE_PATTERN = /\d{1,2}[\/\-]\d{1,2}([\/\-]\d{2,4})?|Q[1-4]\s*\d{0,4}|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|\d{4}/i;
+
+  function validateDates() {
+    // Per-section counters
+    const sections = [
+      { tableId: 'table-anthony', pillId: 'pill-anthony' },
+      { tableId: 'table-kris',    pillId: 'pill-kris'    },
+      { tableId: 'table-jonas',   pillId: 'pill-jonas'   }
+    ];
+
+    sections.forEach(function(sec) {
+      const table = document.getElementById(sec.tableId);
+      const pill  = document.getElementById(sec.pillId);
+      if (!table || !pill) return;
+
+      const cells = table.querySelectorAll('td[data-date-required]');
+      let missing = 0;
+
+      cells.forEach(function(td) {
+        const text = td.textContent.trim();
+        const isEmpty = text === '' || text === '[TARGET DATE]';
+        td.classList.remove('date-missing', 'date-ok');
+        if (isEmpty) {
+          td.classList.add('date-missing');
+          missing++;
+        } else if (DATE_PATTERN.test(text)) {
+          td.classList.add('date-ok');
+        }
+      });
+
+      pill.classList.remove('has-missing', 'all-good');
+      if (missing > 0) {
+        pill.textContent = missing + ' date' + (missing > 1 ? 's' : '') + ' missing';
+        pill.classList.add('has-missing');
+      } else {
+        pill.textContent = '✓ All dates filled';
+        pill.classList.add('all-good');
+      }
+    });
+
+    // Action items tab counter
+    const actionCells = document.querySelectorAll('td[data-action-date]');
+    let actionMissing = 0;
+    actionCells.forEach(function(td) {
+      const text = td.textContent.trim();
+      const isEmpty = text === '' || text === '[TARGET DATE]';
+      td.classList.remove('date-missing', 'date-ok');
+      if (isEmpty) { td.classList.add('date-missing'); actionMissing++; }
+      else if (DATE_PATTERN.test(text)) { td.classList.add('date-ok'); }
+    });
+    const actionPill = document.getElementById('action-missing-pill');
+    if (actionPill) {
+      actionPill.classList.remove('has-missing', 'all-good');
+      if (actionMissing > 0) {
+        actionPill.textContent = actionMissing + ' date' + (actionMissing > 1 ? 's' : '') + ' missing';
+        actionPill.classList.add('has-missing');
+      } else {
+        actionPill.textContent = '✓ All dates filled';
+        actionPill.classList.add('all-good');
+      }
+    }
+  }
+
+  // ── localStorage save/restore ────────────────────────────────────────────
+  let saveTimer = null;
+  let indicatorTimer = null;
+
+  function scheduleSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveAll, 800);
+  }
+
+  function saveAll() {
+    const data = { editables: {}, badges: [] };
+
+    // Save all contenteditable elements
+    document.querySelectorAll('[contenteditable]').forEach(function(el, i) {
+      const id = el.id || ('ce_' + i);
+      if (!el.id) el.setAttribute('data-ce-idx', i);
+      data.editables[id || ('ce_' + i)] = el.innerHTML;
+    });
+
+    // Save all badges
+    document.querySelectorAll('.badge').forEach(function(b, i) {
+      const cls = BADGE_CLASSES.find(c => b.classList.contains(c)) || 'badge-on-target';
+      data.badges.push({ idx: i, cls: cls, text: b.textContent });
+    });
+
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch(e) {}
+
+    // Show save indicator
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ind = document.getElementById('save-indicator');
+    document.getElementById('save-time').textContent = hh + ':' + mm;
+    ind.classList.add('visible');
+    clearTimeout(indicatorTimer);
+    indicatorTimer = setTimeout(function() { ind.classList.remove('visible'); }, 3000);
+
+    validateDates();
+  }
+
+  function restoreAll() {
+    let data;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      data = JSON.parse(raw);
+    } catch(e) { return false; }
+
+    if (data.editables) {
+      document.querySelectorAll('[contenteditable]').forEach(function(el, i) {
+        const key = el.id || ('ce_' + i);
+        if (data.editables[key] !== undefined) {
+          el.innerHTML = data.editables[key];
+        }
+      });
+    }
+
+    if (data.badges) {
+      const badges = document.querySelectorAll('.badge');
+      data.badges.forEach(function(saved) {
+        const b = badges[saved.idx];
+        if (!b) return;
+        BADGE_CLASSES.forEach(c => b.classList.remove(c));
+        b.classList.add(saved.cls);
+        b.textContent = saved.text;
+      });
+    }
+
+    return true;
+  }
+
+  // ── Init ─────────────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set today's date in header if not restored
+    const dateEl = document.getElementById('header-date');
+    const restored = restoreAll();
+    if (!restored || !dateEl.textContent.trim()) {
+      dateEl.textContent = formatDate(new Date());
+    }
+
+    // Wire up input events for auto-save
+    document.addEventListener('input', function(e) {
+      if (e.target.matches('[contenteditable]')) {
+        scheduleSave();
+        validateDates();
+      }
+    });
+
+    validateDates();
+  });
+
+})();
+</script>
+
+<script>
+// ─── LOCK / UNLOCK ────────────────────────────────────────────────────────────
+// Password is stored as SHA-256 hash only — never plaintext.
+const PW_HASH = 'c7c63acc2b79f8ae36746930b4ebfdef3aca62b8f7665682145ac26732be1137';
+
+async function hashInput(str) {
+  const buf = await crypto.subtle.digest('SHA-256',
+    new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function applyLockState(locked) {
+  const btn    = document.getElementById('header-lock-btn');
+  const banner = document.getElementById('readonly-banner');
+  if (locked) {
+    document.body.classList.add('locked');
+    btn.textContent = '🔒 Locked';
+    btn.classList.remove('unlocked');
+    btn.classList.add('locked');
+    banner.classList.remove('hidden');
+  } else {
+    document.body.classList.remove('locked');
+    btn.textContent = '🔓 Unlocked';
+    btn.classList.remove('locked');
+    btn.classList.add('unlocked');
+    banner.classList.add('hidden');
+  }
+}
+
+async function toggleLock() {
+  const isLocked = document.body.classList.contains('locked');
+  if (isLocked) {
+    // Prompt for password to unlock
+    const pw = prompt('Enter password to enable editing:');
+    if (pw === null) return; // cancelled
+    const hash = await hashInput(pw);
+    if (hash === PW_HASH) {
+      applyLockState(false);
+    } else {
+      alert('Incorrect password.');
+    }
+  } else {
+    // Lock immediately — no password needed to re-lock
+    applyLockState(true);
+  }
+}
+
+// Start locked on every page load
+document.addEventListener('DOMContentLoaded', function() {
+  applyLockState(true);
+});
+</script>
+</body>
+</html>
